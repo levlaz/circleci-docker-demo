@@ -1,0 +1,23 @@
+machine:
+    services:
+        - docker
+    python:
+        version: 2.7.12
+
+dependencies:
+    override:
+        - pip install .
+
+test:
+    override:
+        - python setup.py test
+
+deployment:
+    master:
+        branch: master
+        commands:
+            - docker build -t levlaz/aws-demo:$CIRCLE_SHA1 .
+            - docker tag levlaz/aws-demo:$CIRCLEI_SHA1 levlaz/aws-demo:latest
+            - docker login -e="." -u $DOCKER_USER -p $DOCKER_PASS
+            - docker push levlaz/aws-demo
+            - scripts/deploy.sh
