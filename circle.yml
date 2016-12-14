@@ -7,6 +7,7 @@ machine:
 dependencies:
     override:
         - pip install .
+        - pip install pytest
 
 test:
     override:
