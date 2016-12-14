@@ -1,4 +1,4 @@
-# Docker to Elastic Container Service
+# Docker to AWS
 
 This is a sample Flask app that is deployed to a Cloud Server on AWS with CircleCI.
 
