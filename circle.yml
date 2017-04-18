@@ -1,24 +1,35 @@
-machine:
-    services:
-        - docker
-    python:
-        version: 2.7.12
+version: 2
+jobs:
+  build:
+    docker:
+      - image: python:3.5
+        environment:
+          FLASK_CONFIG: testing
+          DATABASE_URL: postgresql://ubuntu@localhost/circle_test?sslmode=disable
+      - image: postgres:9.5
+        environment:
+          POSTGRES_USER: ubuntu
+          POSTGRES_DB: circle_test
+          POSTGRES_PASSWORD: ""
+      working_directory: /home/ubuntu/circleci-docker-demo
 
-dependencies:
-    override:
-        - pip install .
-        - pip install pytest
+      steps:
+        - checkout
+        - run:
+            name: Install Python Requirements
+            command: |
+              pip install .
+              pip install pytest
+        - run:
+            name: Run Tests
+            command: python setup.py test
 
-test:
-    override:
-        - python setup.py test
-
-deployment:
-    master:
-        branch: master
-        commands:
-            - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-            - docker build -t levlaz/aws-demo:$CIRCLE_SHA1 .
-            - docker tag levlaz/aws-demo:$CIRCLE_SHA1 levlaz/aws-demo:latest
-            - docker push levlaz/aws-demo
-            - scripts/deploy.sh
+# deployment:
+#     master:
+#         branch: master
+#         commands:
+#             - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+#             - docker build -t levlaz/aws-demo:$CIRCLE_SHA1 .
+#             - docker tag levlaz/aws-demo:$CIRCLE_SHA1 levlaz/aws-demo:latest
+#             - docker push levlaz/aws-demo
+#             - scripts/deploy.sh
