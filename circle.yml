@@ -11,8 +11,8 @@ jobs:
           POSTGRES_USER: ubuntu
           POSTGRES_DB: circle_test
           POSTGRES_PASSWORD: ""
-      working_directory: /home/ubuntu/circleci-docker-demo
 
+      working_directory: /home/ubuntu/circleci-docker-demo
       steps:
         - checkout
         - run:
@@ -22,14 +22,5 @@ jobs:
               pip install pytest
         - run:
             name: Run Tests
-            command: python setup.py test
-
-# deployment:
-#     master:
-#         branch: master
-#         commands:
-#             - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-#             - docker build -t levlaz/aws-demo:$CIRCLE_SHA1 .
-#             - docker tag levlaz/aws-demo:$CIRCLE_SHA1 levlaz/aws-demo:latest
-#             - docker push levlaz/aws-demo
-#             - scripts/deploy.sh
+            command: |
+              python setup.py test
