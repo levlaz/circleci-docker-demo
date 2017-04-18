@@ -45,7 +45,7 @@ def logout(client):
 def test_empty_db(client):
     """Start with a blank database."""
     rv = client.get('/')
-    assert b'No entries here so far' in rv.data
+    assert b'We are deploying to production!' in rv.data
 
 
 def test_login_logout(client):
