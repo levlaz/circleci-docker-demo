@@ -1,4 +1,4 @@
-FROM python:2.7.12
+FROM python:2.7.13-alpine
 ENV FLASK_APP flaskr
 
 EXPOSE 5000
